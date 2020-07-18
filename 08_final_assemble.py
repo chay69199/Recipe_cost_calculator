@@ -1,4 +1,3 @@
-
   
 import math
 
@@ -162,32 +161,6 @@ def get_ingredients(title):
   return all_ingredients
 
 
-
-def calcprint_ingredients(ingredients):
-    totalc = 0.0
-    for ingredient in ingredients:
-      cost = 0
-      unit_price = 0.0   # unit price unit $/kg
-      if ingredient[5] == 'kg':
-        unit_price = ingredient[3]/ingredient[4]
-      else: 
-        unit_price = ingredient[3]*1000/ingredient[4]
-      
-      if ingredient[2] == 'kg':
-        cost = ingredient[1]*unit_price
-      else:
-        cost = ingredient[1]/1000*unit_price
-
-      totalc += cost 
-      
-      print("Ingredient:{} Amount:{}{} Price:${}/{}{} Unit_Price${:.2f}/Kg Cost: ${:.2f}".format(ingredient[0],ingredient[1],ingredient[2],ingredient[3],ingredient[4],ingredient[5],unit_price,cost))
-      
-    return totalc
-
-
-
-
-
 # Main
 
 # Title / Welcome
@@ -223,13 +196,35 @@ print("Recipe Name: " + recipe_name)
 print("Servings: {:.2f}".format(servings_factor))
 
 print()
-print("********** Ingredient cost, Total cost and per serve **********")
+print("********** Ingredient cost **********")
 print()
 
-total_cost=calcprint_ingredients(all_ingredients)
+total_cost = 0
+servings = 0
+
+for ingredient in all_ingredients:
+  cost = 0
+  unit_price = 0.0   # unit price unit $/kg
+  if ingredient[5] == 'kg':
+    unit_price = ingredient[3]/ingredient[4]
+  else: 
+    unit_price = ingredient[3]*1000/ingredient[4]
+  
+  if ingredient[2] == 'kg':
+    cost = ingredient[1]*unit_price
+  else:
+    cost = ingredient[1]/1000*unit_price
+
+  total_cost += cost 
+  
+  print("Ingredient:{} Amount:{}{} Price:${}/{}{} Unit_Price${:.2f}/Kg Cost: ${:.2f}".format(ingredient[0],ingredient[1],ingredient[2],ingredient[3],ingredient[4],ingredient[5],unit_price,cost))
+  
+print()
+print("********** Total cost ans per serve **********")
+print()
 servings = total_cost/(float)(servings_factor)
 
-print()
 print("Total cost: ${:.2f}".format(total_cost))
+
 print("Per Serve: ${:.2f}".format(servings))
 
