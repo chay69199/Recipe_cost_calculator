@@ -17,7 +17,7 @@ def num_check(type, question, lowest):
 
     # Ask the question and check that the answer is valid
     try:
-      response = float(input(question))
+      response = type(input(question))
 
       if response > lowest:
         return response
@@ -39,9 +39,9 @@ def yes_no(question):
     print(response)
 
     for item in to_check:
-      if response == item:
+      if response.lower() == item:
         return response
-      elif response == item[0]:
+      elif response.lower() == item[0]:
         return item
 
     print("Please enter either yes or no...\n")
@@ -65,16 +65,30 @@ def g_kg(question):
     print("Please enter either g or kg...\n")
 
 # Checks a response to a question is not blank
-def not_blank(question):
+def not_blank (question):
+    error = "your recipe name has numbers in it."
 
-  valid = False
-  while not valid:
-    response = input(question)
+    valid =  False  
+    while not valid:
+        response = input(question)
+        has_errors = ""
 
-    if response != "":
-      return response
-    else:
-      print("Sorry, this can't be blank.\n")
+        # look at each character in string and if it's a number, complain
+        for letter in response:
+            if letter.isdigit():
+                has_errors = "yes"
+                break
+
+        if response == "":
+            print("Sorry, this can't be blank")
+            print()
+            continue
+        elif has_errors != "":
+            print(error)
+            print()
+            continue
+        else:
+            return response
 
 # Displays instructions if program has not been used before
 def instructions():
@@ -103,7 +117,7 @@ def get_ingredients(title):
   # Set up master list to hold all costs
   all_ingredients = []  
   print()
-  print("Please enter the {}".format(title))
+  print("Please enter the ingredients for {}".format(title))
 
   valid = False
   while not valid:
@@ -122,20 +136,24 @@ def get_ingredients(title):
       continue
 
     if item_name.lower() != "xxx":
-      item_amount = num_check(float, "What is the amount of the ingredients? ", 0)
-      item_unit = g_kg("What is the unit of the amount ? (g or kg) ")
-      item_price = num_check(float, "What is the price of the ingredient ({})? ".format(item_name), 0)
-      item_price_unit = g_kg("What is the price unit? (g or kg) ")
+      item_amount = num_check(int, "What is the amount of the ingredients? ", 0)
+      item_amount_unit = g_kg("What is the unit of the amount ? (g or kg) ")
+      item_price = num_check(float, "What is the listing price of the ingredient ({})? ".format(item_name), 0)
+      item_weight = num_check(int, "What is the weight of the listing ingredients? ", 0) #add
+      item_weight_unit = g_kg("What is the price unit? (g or kg) ")
+      #item_unit_price=float(item_price/item_weight)
 
     else:
       break
 
     # Add name and cost for each item to 'row' list
     ingredients.append(item_name)
-    ingredients.append(float(item_amount))
-    ingredients.append(item_unit)
+    ingredients.append(int(item_amount))
+    ingredients.append(item_amount_unit)
     ingredients.append(float(item_price))
-    ingredients.append(item_price_unit)
+    ingredients.append(int(item_weight))
+    ingredients.append(item_weight_unit)
+    #ingredients.append(float(item_unit_price))
     
     # Add each row to the master list
     all_ingredients.append(ingredients)
@@ -146,6 +164,7 @@ def get_ingredients(title):
 # Main
 
 # Title / Welcome
+print("")
 print("****** Welcome to the Recipe Calculator ******")
 
 # Ask user if its their first time and if it is, display instructions
@@ -161,39 +180,52 @@ print("")
 
 servings_factor = num_check(float, "How many servings will you make? ",0)  # check that this is an integer more than 1
 
-print("Servings: {}".format(servings_factor))
+print("Servings: {:.2f}".format(servings_factor))
 
 print("")
 
 all_ingredients = get_ingredients(recipe_name)
 
-print("Ingredients List:")
 
+print()
+print("********* Recipe Name and servings ***********")
+print()
+print("Recipe Name: " + recipe_name)
+print("Servings: {}".format(servings_factor))
+
+print()
+print("********* Ingredient cost ***********")
+print()
+#print("Name Weight price cost")
 total_cost = 0
 servings = 0
+print(all_ingredients)
 
 for ingredient in all_ingredients:
-  print("Ingredient : {} ".format(ingredient))
+  #print("Ingredient : {} ".format(ingredient))
   cost = 0
-  unit_price = 0
+  unit_cost = 0.0
   # unit price unit $/kg
-  if ingredient[4] == 'kg':
-    unit_price = ingredient[3]
+  if ingredient[5] == 'kg':
+    unit_cost = ingredient[3]/ingredient[4]
   else: 
-    unit_price = ingredient[3]*1000
+    unit_cost = ingredient[3]*1000/ingredient[4]
   
   if ingredient[2] == 'kg':
-    cost = ingredient[1]*unit_price
+    cost = ingredient[1]*unit_cost
   else:
-    cost = ingredient[1]/1000*unit_price
+    cost = ingredient[1]/1000*unit_cost
 
   total_cost += cost 
   
-  print("Ingredient price : {} Cost: ${}".format(ingredient[0], cost))
-
+  print("Item:{} Amount:{}{} Price:${}/{}{} Cost: ${:.2f}".format(ingredient[0],ingredient[1],ingredient[2],ingredient[3],ingredient[4],ingredient[5], cost))
+  
+print()
+print("********* Total cost ans per serve ***********")
+print()
 servings = total_cost/(float)(servings_factor)
 
-print("Total cost: {}".format(total_cost))
+print("Total cost: ${:.2f}".format(total_cost))
 
-print("Per Serve: {}".format(servings))
+print("Per Serve: ${:.2f}".format(servings))
 
