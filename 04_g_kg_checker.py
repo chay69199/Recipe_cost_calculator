@@ -15,7 +15,7 @@ def g_kg(question):
 
     for item in to_check:
       if response.lower() == item:
-        return response
+        return response.lower()
 
     print("Please enter either g or kg...\n")
 

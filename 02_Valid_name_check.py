@@ -1,4 +1,3 @@
-
 import math
 
 # Checks a response to a question is not blank and no number in it
@@ -29,6 +28,9 @@ def not_blank (question):
 
 # Main Routine goes here
 
-valid_name = not_blank("input a name which does not contain numbers ")
+for item in range(0,100):
 
-print("Your input name is  {}, your input is good".format(valid_name))
+    valid_name = not_blank("input a name which does not contain numbers ")
+
+    print("Your input name is  {}, your input is good".format(valid_name))
+    print()

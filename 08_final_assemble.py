@@ -41,7 +41,7 @@ def yes_no(question):
 
     for item in to_check:
       if response.lower() == item:
-        return response
+        return response.lower()
       elif response.lower() == item[0]:
         return item
 
@@ -59,7 +59,7 @@ def g_kg(question):
 
     for item in to_check:
       if response.lower() == item:
-        return response
+        return response.lower()
 
     print("Please enter either g or kg...\n")
 
@@ -207,7 +207,7 @@ print("Recipe: " + recipe_name)
 
 print("")
 
-servings_factor = num_check(float, "How many servings will you make? ",0)  # check that this is an number more than 1
+servings_factor = num_check(float, "Serving size? ",0)  # check that this is an number more than 1
 
 print("Servings: {:.2f}".format(servings_factor))
 

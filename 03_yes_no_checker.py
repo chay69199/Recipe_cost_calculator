@@ -1,4 +1,4 @@
-
+  
 import math
 
 
@@ -15,7 +15,7 @@ def yes_no(question):
 
     for item in to_check:
       if response.lower() == item:
-        return response
+        return response.lower()
       elif response.lower() == item[0]:
         return item
 
