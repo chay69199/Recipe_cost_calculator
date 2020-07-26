@@ -233,3 +233,6 @@ print()
 print("Total cost: ${:.2f}".format(total_cost))
 print("Per Serve: ${:.2f}".format(servings))
 
+print()
+print("Thanks for using the Recip Cost Calculator. Please maintain a Healthy Eating Lifestyle with high quality food!")
+print()
